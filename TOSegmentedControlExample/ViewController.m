@@ -29,13 +29,13 @@
     
     __weak typeof(self) weakSelf = self;
     self.segmentedControl.itemColor = UIColor.whiteColor;
-    self.segmentedControl.items = @[@"First ControlAAAA", @"Second ControlAAAA", @"Third"];
+    self.segmentedControl.items = @[@"First ControlAAAA", @"Second ControlAAAA", @"Third", @"Fourth"];
     self.segmentedControl.backgroundColor = [UIColor colorWithRed:35/255.0 green:37/255.0 blue:40/255.0 alpha:1];
     self.segmentedControl.thumbColor = [UIColor colorWithRed:68/255.0 green:70/255.0 blue:73/255.0 alpha:1];
     self.segmentedControl.customArrowIcon = [UIImage imageNamed:@"arrowIcon"];
     self.segmentedControl.selectedItemColor = UIColor.whiteColor;
     [self.segmentedControl setReversible:YES forSegmentAtIndex:1];
-    [self.segmentedControl setReversed:YES forSegmentAtIndex:1];
+    [self.segmentedControl setReversible:YES forSegmentAtIndex:3];
     self.segmentedControl.segmentTappedHandler = ^(NSInteger index, BOOL reversed) {
         NSString *title = [self nameForIndex:index];
         [weakSelf animateLabel:weakSelf.segmentedLabel title:title reveresed:reversed];

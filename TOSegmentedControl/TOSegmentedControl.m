@@ -1052,8 +1052,9 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
     id animationBlock = ^{
         // Un-fade all of the item views
         for (NSInteger i = 0; i < self.segments.count; i++) {
+            TOSegmentedControlSegment *item = self.segments[i];
             // De-select everything
-            [self setItemAtIndex:i faded:NO];
+            [self setItemAtIndex:i faded:item.isDisabled];
             [self setItemAtIndex:i selected:NO];
 
             // Select the currently selected index
