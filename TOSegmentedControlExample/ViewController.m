@@ -28,12 +28,24 @@
     self.segmentedLabel.alpha = 0.0f;
     
     __weak typeof(self) weakSelf = self;
-    self.segmentedControl.items = @[@"First", @"Second", @"Third"];
+    self.segmentedControl.itemColor = UIColor.whiteColor;
+    self.segmentedControl.items = @[@"First ControlAAAA", @"Second ControlAAAA", @"Third"];
+    self.segmentedControl.backgroundColor = [UIColor colorWithRed:35/255.0 green:37/255.0 blue:40/255.0 alpha:1];
+    self.segmentedControl.thumbColor = [UIColor colorWithRed:68/255.0 green:70/255.0 blue:73/255.0 alpha:1];
+    self.segmentedControl.customArrowIcon = [UIImage imageNamed:@"arrowIcon"];
+    self.segmentedControl.selectedItemColor = UIColor.whiteColor;
     [self.segmentedControl setReversible:YES forSegmentAtIndex:1];
     [self.segmentedControl setReversed:YES forSegmentAtIndex:1];
     self.segmentedControl.segmentTappedHandler = ^(NSInteger index, BOOL reversed) {
         NSString *title = [self nameForIndex:index];
         [weakSelf animateLabel:weakSelf.segmentedLabel title:title reveresed:reversed];
+    };
+    
+    self.segmentedControl.segmentTappedHandler = ^(NSInteger segmentIndex, BOOL reversed) {
+        if (segmentIndex == 1) {
+            [self.segmentedControl setEnabled:reversed forSegmentAtIndex:0];
+            [self.segmentedControl setEnabled:reversed forSegmentAtIndex:2];
+        }
     };
 
     // Additional options that can be tested on the control

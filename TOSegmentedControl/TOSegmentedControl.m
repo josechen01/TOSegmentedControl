@@ -37,7 +37,7 @@ static NSString * const kTOSegmentedControlSeparatorImage = @"separatorImage";
 static CGFloat const kTOSegmentedControlSelectedTextAlpha = 0.3f;
 static CGFloat const kTOSegmentedControlDisabledAlpha = 0.4f;
 static CGFloat const kTOSegmentedControlSelectedScale = 0.95f;
-static CGFloat const kTOSegmentedControlDirectionArrowAlpha = 0.4f;
+static CGFloat const kTOSegmentedControlDirectionArrowAlpha = 1;
 static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
 
 // ----------------------------------------------------------------
@@ -166,6 +166,10 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
     self.thumbShadowRadius = 3.0f;
     self.thumbShadowOffset = 2.0f;
     self.thumbShadowOpacity = 0.13f;
+    
+    //Custom
+    self.itemTitleMinimumScaleFactor = 0.8;
+    self.itemViewHorizontalMargin = 10;
     
     // Configure view interaction
     // When the user taps down in the view
@@ -536,16 +540,19 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
         
         // Cap its size to be within the segmented frame
         itemFrame.size.height = MIN(thumbFrame.size.height, itemFrame.size.height);
-        itemFrame.size.width = MIN(thumbFrame.size.width, itemFrame.size.width);
-        
+        itemFrame.size.width = MIN(thumbFrame.size.width - self.itemViewHorizontalMargin * 2, itemFrame.size.width);
+                
         // If the item is reversible, make sure there is also room to show the arrow
-        CGFloat arrowSpacing = (self.arrowImage.size.width + kTOSegmentedControlDirectionArrowMargin) * 2.0f;
-        if (item.isReversible && (itemFrame.size.width + arrowSpacing) > thumbFrame.size.width) {
+        CGFloat arrowSpacing = self.arrowImage.size.width + kTOSegmentedControlDirectionArrowMargin;
+        if (item.isReversible && (itemFrame.size.width + arrowSpacing + self.itemViewHorizontalMargin * 2) >= thumbFrame.size.width) {
             itemFrame.size.width -= arrowSpacing;
         }
         
         // Center the item in the container
         itemFrame.origin.x = CGRectGetMidX(thumbFrame) - (itemFrame.size.width * 0.5f);
+        if (item.isReversible && self.arrowImage) {
+            itemFrame.origin.x = itemFrame.origin.x - self.arrowImage.size.width / 2.0;
+        }
         itemFrame.origin.y = CGRectGetMidY(thumbFrame) - (itemFrame.size.height * 0.5f);
         
         // Set the item frame
@@ -557,6 +564,8 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
         // If the item is disabled, make it faded
         if (!self.enabled || item.isDisabled) {
             itemView.alpha = kTOSegmentedControlDisabledAlpha;
+        }else {
+            itemView.alpha = 1;
         }
 
         i++;
@@ -714,7 +723,7 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
     TOSegmentedControlSegment *segment = self.segments[index];
 
     // Update the alpha of the reversible arrow
-    segment.arrowView.alpha = selected ? kTOSegmentedControlDirectionArrowAlpha : 0.0f;
+    segment.arrowView.alpha = selected ? kTOSegmentedControlDirectionArrowAlpha : 1.0;
 
     // The rest of this code deals with swapping the font
     // of the label. Cancel out if we're an image.
@@ -1365,6 +1374,9 @@ static CGFloat const kTOSegmentedControlDirectionArrowMargin = 2.0f;
 
 - (UIImage *)arrowImage
 {
+    if (_customArrowIcon) {
+        return _customArrowIcon;
+    }
     // Retrieve from the image table
     UIImage *arrowImage = [self.imageTable objectForKey:kTOSegmentedControlArrowImage];
     if (arrowImage != nil) { return arrowImage; }

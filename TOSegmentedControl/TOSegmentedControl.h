@@ -91,6 +91,16 @@ IB_DESIGNABLE @interface TOSegmentedControl : UIControl
 /** The radius of the shadow */
 @property (nonatomic, assign) IBInspectable CGFloat thumbShadowRadius;
 
+/** Custon Arrow Icon */
+@property (nonatomic, nullable) UIImage *customArrowIcon;
+
+/** The minimum scale factor for item title */
+@property (nonatomic, assign) CGFloat itemTitleMinimumScaleFactor;
+
+/** The left/right margin of the item view (Default is 10) */
+@property (nonatomic, assign) CGFloat itemViewHorizontalMargin;
+
+
 /**
  Creates a new segmented control with the provided items.
 
